@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Customer Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css.css}">
+    <script th:src="@{/js.js}" defer></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-4xl mx-auto my-8 p-6 bg-white rounded shadow">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Customer Dashboard</h1>
+    <a href="/" class="text-blue-600 underline">Home Page</a>
+  </div>
+
+  <p th:if="${param.created}" role="status" class="bg-green-100 text-green-700 p-3 rounded mb-4">
+    Property submitted. It will appear publicly after admin approval.
+  </p>
+  <h2 class="text-xl font-bold mb-4">Post New Property</h2>
+  <form th:action="@{/properties/create}" th:object="${newProperty}" method="post" enctype="multipart/form-data" class="space-y-4 bg-gray-50 p-4 rounded border">
+    <div th:if="${#fields.hasErrors('*')}" role="alert" class="bg-red-100 text-red-700 p-3 rounded">
+      <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Please check your property details.</p>
+    </div>
+    <div>
+      <label class="block font-semibold">Title</label>
+      <input type="text" th:field="*{title}" class="w-full border p-2 rounded" required />
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block font-semibold">Price</label>
+        <input type="number" step="0.01" th:field="*{price}" class="w-full border p-2 rounded" required />
+      </div>
+      <div>
+        <label class="block font-semibold">Type</label>
+        <select th:field="*{type}" class="w-full border p-2 rounded">
+          <option value="SALE">SALE</option>
+          <option value="RENT">RENT</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="block font-semibold">Location</label>
+      <input type="text" th:field="*{location}" class="w-full border p-2 rounded" required />
+    </div>
+    <div>
+      <label class="block font-semibold">Description</label>
+      <textarea th:field="*{description}" class="w-full border p-2 rounded"></textarea>
+    </div>
+    <div>
+      <label class="block font-semibold">Image Upload</label>
+      <input type="file" id="imageFile" name="imageFile" accept="image/png,image/jpeg,image/gif" class="w-full border p-2 rounded" />
+      <img id="imagePreview" alt="Selected property image" class="hidden max-h-48 mt-2" />
+    </div>
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded font-bold">Submit Property</button>
+  </form>
+
+  <h2 class="text-xl font-bold mt-10 mb-4">My Listings</h2>
+  <table class="w-full border-collapse border">
+    <thead>
+    <tr class="bg-gray-200">
+      <th class="border p-2">Title</th>
+      <th class="border p-2">Price</th>
+      <th class="border p-2">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${properties}">
+      <td class="border p-2" th:text="${item.title}">Title</td>
+      <td class="border p-2" th:text="'$' + ${item.price}">Price</td>
+      <td class="border p-2" th:text="${item.approved ? 'Approved' : 'Pending Approval'}">Status</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

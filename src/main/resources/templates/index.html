@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Real Estate Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css.css}">
+    <script th:src="@{/js.js}" defer></script>
+</head>
+<body class="bg-gray-100">
+
+<nav class="bg-blue-600 p-4 text-white flex justify-between items-center">
+    <a href="/" class="text-xl font-bold">RealEstate Portal</a>
+    <div>
+            <span th:if="${#ctx.containsVariable('authenticated') and authenticated}">
+                <a href="/dashboard" class="mr-4 underline">Dashboard</a>
+                <a th:if="${#ctx.containsVariable('admin') and admin}" href="/admin" class="mr-4 underline">Admin Panel</a>
+                <form th:action="@{/logout}" method="post" class="inline"><button type="submit" class="bg-red-500 px-3 py-1 rounded">Logout</button></form>
+            </span>
+        <span th:unless="${#ctx.containsVariable('authenticated') and authenticated}">
+                <a href="/login" class="mr-4 underline">Login</a>
+                <a href="/register" class="bg-white text-blue-600 px-3 py-1 rounded font-bold">Register</a>
+            </span>
+    </div>
+</nav>
+
+<div class="max-w-6xl mx-auto mt-6 p-4">
+    <form action="/" method="get" class="bg-white p-4 rounded shadow grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <input type="text" name="keyword" placeholder="Search keywords..." class="border p-2 rounded" />
+        <input type="text" name="location" placeholder="Location..." class="border p-2 rounded" />
+        <input type="number" name="minPrice" placeholder="Min Price" class="border p-2 rounded" />
+        <select name="type" class="border p-2 rounded">
+            <option value="">All Types</option>
+            <option value="SALE">SALE</option>
+            <option value="RENT">RENT</option>
+        </select>
+        <button type="submit" class="bg-blue-600 text-white p-2 rounded font-bold">Search</button>
+    </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div th:each="property : ${properties}" class="bg-white rounded shadow overflow-hidden">
+            <img th:src="${property.imageUrl != null ? property.imageUrl : 'https://via.placeholder.com/400x250'}" class="w-full h-48 object-cover"/>
+            <div class="p-4">
+                <span class="text-xs font-bold uppercase bg-blue-100 text-blue-800 px-2 py-1 rounded" th:text="${property.type}">TYPE</span>
+                <h2 class="text-lg font-bold mt-2" th:text="${property.title}">Property Title</h2>
+                <p class="text-green-600 font-bold" th:text="'$' + ${property.price}">$0.00</p>
+                <p class="text-gray-500 text-sm" th:text="'📍 ' + ${property.location}">Location</p>
+                <a th:href="@{'/properties/' + ${property.id}}" class="block text-center bg-gray-800 text-white mt-4 py-2 rounded">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

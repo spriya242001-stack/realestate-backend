@@ -1,0 +1,35 @@
+/* Custom Scrollbar for property galleries */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Glassmorphism utility card styling */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Image zoom effect on property card hover */
+.property-card-img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.property-card:hover .property-card-img {
+    transform: scale(1.05);
+}

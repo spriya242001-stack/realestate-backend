@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${property.title} + ' - Real Estate Platform'">Property Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css.css}">
+    <script th:src="@{/js.js}" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<nav class="bg-blue-600 p-4 text-white">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+        <a th:href="@{/}" class="text-xl font-bold">RealEstate Portal</a>
+        <a th:href="@{/}" class="underline">Back to properties</a>
+    </div>
+</nav>
+
+<main class="max-w-5xl mx-auto my-8 px-4">
+    <article class="bg-white rounded-lg shadow overflow-hidden md:grid md:grid-cols-2">
+        <img th:if="${property.imageUrl != null and !property.imageUrl.isEmpty()}"
+             th:src="${property.imageUrl}"
+             th:alt="${property.title}"
+             class="w-full h-80 md:h-full object-cover">
+        <div th:unless="${property.imageUrl != null and !property.imageUrl.isEmpty()}"
+             class="w-full h-80 md:h-full bg-gray-200 flex items-center justify-center text-gray-500">
+            No image available
+        </div>
+
+        <div class="p-8">
+            <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded"
+                  th:text="${property.type}">SALE</span>
+            <h1 th:text="${property.title}">Property title</h1>
+            <p class="text-green-700 font-bold" th:text="'$' + ${property.price}">Price</p>
+            <dl class="mt-6 space-y-4 text-gray-700">
+                <div>
+                    <dt class="font-semibold">Location</dt>
+                    <dd th:text="${property.location}">Location</dd>
+                </div>
+                <div>
+                    <dt class="font-semibold">Description</dt>
+                    <dd class="whitespace-pre-line" th:text="${property.description}">Description</dd>
+                </div>
+                <div>
+                    <dt class="font-semibold">Listing status</dt>
+                    <dd th:text="${property.approved ? 'Approved' : 'Pending approval'}">Approved</dd>
+                </div>
+            </dl>
+        </div>
+    </article>
+</main>
+
+</body>
+</html>

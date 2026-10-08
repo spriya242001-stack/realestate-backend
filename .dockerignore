@@ -1,0 +1,7 @@
+.git
+.idea
+.local
+.aws
+target
+**/.DS_Store
+*.log
